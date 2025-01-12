@@ -35,18 +35,18 @@ const allRouter = [
         path: "/app",
         element: <MainLayout />,
         children: [
-          { path: "/cart", element: <CartPage />, isPrivate: true },
+          { path: "cart", element: <CartPage />, isPrivate: true },
           {
-            path: "/member/my-info",
+            path: "member/my-info",
             element: <MyInfoPage />,
             isPrivate: true,
           },
           {
-            path: "/member/purchase-history",
+            path: "member/purchase-history",
             element: <PurchaseHistoryPage />,
             isPrivate: true,
           },
-          { path: "/checkout", element: <CheckoutPage />, isPrivate: true },
+          { path: "checkout", element: <CheckoutPage />, isPrivate: true },
         ],
       },
     ],
