@@ -10,6 +10,8 @@ import CartPage from "./pages/customer/cart/cart-page";
 import MyInfoPage from "./pages/customer/my-info/my-info-page";
 import PurchaseHistoryPage from "./pages/customer/purchase-history/purchase-history-page";
 import CheckoutPage from "./pages/customer/checkout/checkout-page";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const allRouter = [
   {
@@ -55,7 +57,12 @@ const allRouter = [
 
 function App() {
   const router = createBrowserRouter(allRouter);
-  return <RouterProvider router={router} />;
+  return (
+    <div>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </div>
+  );
 }
 
 export default App;
