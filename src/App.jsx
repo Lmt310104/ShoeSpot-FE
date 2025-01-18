@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import ErrorPage from "./pages/error/error-page";
 import HomePage from "./pages/customer/home/home-page";
 import ProductDetailPage from "./pages/customer/product-detail/product-detail-page";
@@ -11,13 +15,22 @@ import MyInfoPage from "./pages/customer/my-info/my-info-page";
 import PurchaseHistoryPage from "./pages/customer/purchase-history/purchase-history-page";
 import CheckoutPage from "./pages/customer/checkout/checkout-page";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+
+import Footer from "./components/footer";
 
 const allRouter = [
   {
     path: "/",
     children: [
-      { index: true, element: <HomePage />, isPrivate: false },
+      {
+        index: true,
+        element: (
+          <div>
+            <HomePage /> <Footer />
+          </div>
+        ),
+        isPrivate: false,
+      },
       {
         path: "pruduct-detail/:id",
         element: <ProductDetailPage />,
@@ -27,7 +40,7 @@ const allRouter = [
         path: "auth",
         element: <AuthLayout />,
         children: [
-          { index: true, element: <LoginPage />, isPrivate: false },
+          { index: true, element: <Navigate to="login" replace /> },
           { path: "login", element: <LoginPage />, isPrivate: false },
           { path: "signup", element: <SignUpPage />, isPrivate: false },
         ],
@@ -58,10 +71,10 @@ const allRouter = [
 function App() {
   const router = createBrowserRouter(allRouter);
   return (
-    <div>
+    <>
       <RouterProvider router={router} />
       <ToastContainer />
-    </div>
+    </>
   );
 }
 
