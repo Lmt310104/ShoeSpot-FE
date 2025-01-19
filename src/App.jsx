@@ -17,6 +17,7 @@ import CheckoutPage from "./pages/customer/checkout/checkout-page";
 import { ToastContainer } from "react-toastify";
 
 import Footer from "./components/footer";
+import AppProvider from "./context/app-provider";
 
 const allRouter = [
   {
@@ -71,10 +72,10 @@ const allRouter = [
 function App() {
   const router = createBrowserRouter(allRouter);
   return (
-    <>
+    <AppProvider>
       <RouterProvider router={router} />
       <ToastContainer />
-    </>
+    </AppProvider>
   );
 }
 

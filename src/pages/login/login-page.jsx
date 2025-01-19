@@ -1,13 +1,41 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import Thumbnail from "../../assets/thumbnail_auth.jpg";
+import { toast } from "react-toastify";
+import authService from "../../services/auth.service";
+import { setAccessToken } from "../../lib/api-client";
+import { jwtDecode } from "jwt-decode";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [setAuth] = useAuth();
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      const response = await authService.login(values);
+      if (response.data) {
+        const accessToken = response.data.access_token;
+        setAccessToken(accessToken);
+        const { id, role } = jwtDecode(accessToken);
+
+        setAuth({
+          userId: id,
+          role,
+        });
+        toast.success("Đăng nhập thành công");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Login failed: " + error.message);
+      console.error("Login error:", error);
+    }
   };
+
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.error("Form validation failed:", errorInfo);
+    toast.error("Please check your inputs and try again");
   };
+
   return (
     <div className="flex justify-center">
       <div className="flex-[6]">
