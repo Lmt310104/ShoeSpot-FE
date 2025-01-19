@@ -1,3 +1,11 @@
+import { Footer, Header } from "antd/es/layout/layout";
+
 export default function PurchaseHistoryPage() {
-  return <h1>Purchase History Page</h1>;
+  return (
+    <>
+      <Header />
+      <div>purchase history page</div>
+      <Footer />
+    </>
+  );
 }
