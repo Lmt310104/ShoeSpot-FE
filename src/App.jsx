@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 
 import Footer from "./components/footer";
 import AppProvider from "./context/app-provider";
+import Header from "./components/header";
 
 const allRouter = [
   {
@@ -27,6 +28,7 @@ const allRouter = [
         index: true,
         element: (
           <div>
+            <Header />
             <HomePage /> <Footer />
           </div>
         ),

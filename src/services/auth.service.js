@@ -6,11 +6,11 @@ import axios from "axios";
 class AuthService {
   async login(data) {
     const trimmedData = trimObjectAttributes(data);
-    return api.post("/user/log-in", trimmedData);
+    return api.post("/auth/log-in", trimmedData);
   }
   async signUp(data) {
     const trimmedData = trimObjectAttributes(data);
-    return api.post("/user/sign-up", trimmedData);
+    return api.post("/auth/sign-up", trimmedData);
   }
   async refreshAccessToken() {
     const token = getAccessToken();
@@ -18,7 +18,7 @@ class AuthService {
 
     const response = await axios.get(`${API_URL}/auth/refresh-token`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         "Content-Type": "application/json",
       },
       withCredentials: true,
@@ -27,6 +27,9 @@ class AuthService {
     const newAccessToken = response.data.access_token;
     setAccessToken(newAccessToken);
     return newAccessToken;
+  }
+  async logOut() {
+    return api.post("/auth/log-out");
   }
 }
 

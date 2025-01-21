@@ -11,9 +11,9 @@ const AuthProvider = ({ children }) => {
     const token = getAccessToken();
     if (token) {
       try {
-        const { id, role } = jwtDecode(token);
+        const { userId, role } = jwtDecode(token);
         return {
-          userId: id,
+          userId: userId,
           role: role,
         };
       } catch (err) {
@@ -23,13 +23,17 @@ const AuthProvider = ({ children }) => {
     return null;
   });
 
-  const fetchUser = async (id) => {
+  const fetchUser = async (userId) => {
     try {
-      const response = await userService.getAccountById(id);
+      const response = await userService.getAccountById(userId);
+      console.log("Fetch user", response.data, userId);
       setUser({
-        full_name: response.data.data.full_name,
-        avatar_url: response.data.data.avatar_url,
-        email: response.data.data.email,
+        full_name: response.data.metadata.fullname,
+        username: response.data.metadata.username,
+        email: response.data.metadata.email,
+        password: response.data.metadata.password,
+        phone: response.data.metadata.phoneNumber,
+        address: response.data.metadata.address,
       });
     } catch (err) {
       console.log(err);

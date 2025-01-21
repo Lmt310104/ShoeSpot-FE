@@ -8,13 +8,13 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const [setAuth] = useAuth();
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       const response = await authService.login(values);
       if (response.data) {
-        const accessToken = response.data.access_token;
+        const accessToken = response.data.metadata.tokens.accessToken;
         setAccessToken(accessToken);
         const { id, role } = jwtDecode(accessToken);
 
@@ -56,6 +56,7 @@ export default function LoginPage() {
           }}
           style={{
             maxWidth: "100%",
+            fontFamily: "Poppins",
           }}
           initialValues={{
             remember: true,
@@ -65,8 +66,8 @@ export default function LoginPage() {
           autoComplete="off"
         >
           <Form.Item
-            label="Username"
-            name="username"
+            label="Email"
+            name="email"
             style={{
               fontFamily: "Poppins",
             }}
