@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { API_URL } from "../../../utils/constant";
-function ProductSearch({item, onSearchResults, onSetPageSize}) {
+function ProductSearch({ item, onSearchResults, onSetPageSize }) {
   console.log(item);
   const [search, setSearch] = useState(""); // Giá trị nhập liệu
-  const uniqueBrands = ["Adidas", "Nike", "Puma", "Jodan"]
+  const uniqueBrands = ["Adidas", "Nike", "Puma", "Jodan"];
   const [selectedBrand, setSelectedBrand] = useState("");
   const handleBrandChange = (e) => {
     const selectedValue = e.target.value;
@@ -22,8 +22,8 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
   const handleChange = (e) => {
     setSearch(e.target.value); // Cập nhật giá trị tìm kiếm
   };
-  const fetcApi = (info) =>{
-      fetch(`http://localhost:3055/api/v1/product/search?q=${info}&page=${1}`)
+  const fetcApi = (info) => {
+    fetch(`${API_URL}/product/search?q=${info}&page=${1}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Không tìm thấy sản phẩm phù hợp."); // Xử lý lỗi HTTP
@@ -32,7 +32,11 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
       })
       .then((data) => {
         if (!data.metadata || data.metadata.results.length === 0) {
-          Swal.fire("Thông báo", "Không có sản phẩm nào được tìm thấy.", "info");
+          Swal.fire(
+            "Thông báo",
+            "Không có sản phẩm nào được tìm thấy.",
+            "info"
+          );
           onSearchResults([]); // Đặt danh sách rỗng
         } else {
           const totalPages = data.metadata.pagination.totalPages;
@@ -44,8 +48,7 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
         Swal.fire("Lỗi", err.message, "error");
         onSearchResults([]); // Đặt lại danh sách sản phẩm
       });
-    
-  }
+  };
   const handleSearch = (e) => {
     e.preventDefault();
     if (!search.trim()) {
