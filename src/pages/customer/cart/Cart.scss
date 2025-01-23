@@ -67,8 +67,14 @@
     }
     &__delete-all{
         padding: 5px;
+        background-color: #F0F0F0;
+        border: solid 1px black;
         
-
+    }
+    &__delete{
+        background-color: #F0F0F0;
+        border: solid 1px black;
+        padding: 0 5px;
     }
     &__title{
         display: flex;

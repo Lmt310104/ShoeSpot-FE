@@ -3,6 +3,7 @@ import ProductItem from "./ProductItem";
 import "./Product.scss";
 import ProductSearch from "./ProductSearch";
 import { API_URL } from "../../../utils/constant";
+import { GrReturn } from "react-icons/gr";
 function ProductList() {
   const [allProducts, setAllProducts] = useState([]); // Dữ liệu tất cả sản phẩm từ API
   const [searchResults, setSearchResults] = useState([]); // Dữ liệu sản phẩm tìm kiếm
@@ -12,7 +13,9 @@ function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${API_URL}/product?page=${currentpage}`);
+        const response = await fetch(
+          `http://localhost:3055/api/v1/product?page=${currentpage}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -25,7 +28,7 @@ function ProductList() {
     };
     fetchProducts();
   }, [currentpage]);
-  console.log(pageSize);
+
   const handlePrev = () => {
     if (currentpage > 1) {
       setCurrentPage(currentpage - 1);
@@ -33,6 +36,7 @@ function ProductList() {
       alert("Đây là trang đầu tiên rồi");
     }
   };
+
   const handleNext = () => {
     if (currentpage < pageSize) {
       setCurrentPage(currentpage + 1);
@@ -40,10 +44,12 @@ function ProductList() {
       alert("Đây là trang cuối cùng rồi");
     }
   };
-  console.log(pageSize);
+  const handleReturn = () =>{
+    window.location.reload();
+  }
   return (
     <>
-      <ProductSearch onSearchResults={setSearchResults} />
+      <ProductSearch item = {currentpage} onSearchResults={setSearchResults} onSetPageSize = {setPageSize} />
       <div className="product">
         {searchResults.length > 0 ? (
           // Hiển thị kết quả tìm kiếm
@@ -60,11 +66,17 @@ function ProductList() {
                 Next
               </button>
             </div>
+            <button title = "Trở về trang chủ" className="product__return" onClick={handleReturn}>
+              <div>
+              <GrReturn />
+              </div>
+            </button>
           </>
         ) : (
+          // Hiển thị tất cả sản phẩm
           <>
             {allProducts.map((item) => (
-              <ProductItem key={item._id} item={item} />
+              <ProductItem key={item.id} item={item} />
             ))}
             <div className="product__trans">
               <button className="product__prev" onClick={handlePrev}>

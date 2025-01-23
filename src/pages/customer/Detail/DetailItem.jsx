@@ -1,5 +1,5 @@
 import { IoCartOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./detail.scss";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
@@ -7,11 +7,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { API_URL } from "../../../utils/constant";
 import { getAccessToken } from "../../../lib/api-client";
 import useAuth from "../../../hooks/useAuth";
+import ProductItem from "../../../components/layouts/Product/ProductItem";
 
 function DetailItem({ detail }) {
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+   const [sameProduct, setSameProduct] = useState([]);
   const [auth, setAuth] = useAuth();
   const token = getAccessToken();
   console.log(detail._id);
@@ -30,7 +32,19 @@ function DetailItem({ detail }) {
       setQuantity(1);
     }
   };
-
+  // api sản phẩm tương tự
+  useEffect (() =>{
+    const fetchProductSame = async () =>{
+     
+        const response = await fetch(`http://localhost:3055/api/v1/product/related-products?brand=${detail.product_brand}`);
+        if (!response.ok) {
+          throw new Error("Không tìm thấy sản phẩm"); // Xử lý lỗi HTTP
+        }
+        const data = await response.json();
+        setSameProduct(data.metadata); // Lưu chi tiết sản phẩm
+    }
+    fetchProductSame();
+  },[detail.product_brand])
   const handlePlus = () => {
     setQuantity((prevQuantity) =>
       prevQuantity < 100 ? prevQuantity + 1 : 100
@@ -92,9 +106,9 @@ function DetailItem({ detail }) {
     }
     postCart();
   };
-
   return (
-    <div className="detail">
+    <>
+      <div className="detail">
       <div className="detail__image">
         <img src={detail.product_thumbnails} alt={detail.product_name} />
       </div>
@@ -155,6 +169,18 @@ function DetailItem({ detail }) {
         </button>
       </div>
     </div>
+    <div className="detail_product">
+    <h2 className="product__same">SẢN PHẨM TƯƠNG TỰ</h2>
+    <div className="product">
+      {
+        sameProduct.map((item)=>(
+          <ProductItem item = {item} key= {item._id} />
+        ))
+      }
+    </div>
+    </div>
+    </>
+    
   );
 }
 

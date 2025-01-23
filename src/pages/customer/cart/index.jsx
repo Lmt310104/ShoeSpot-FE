@@ -6,15 +6,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { API_URL } from "../../../utils/constant";
 import useAuth from "../../../hooks/useAuth";
-import useUser from "../../../hooks/useUser";
 import { getAccessToken } from "../../../lib/api-client";
+import { useNavigate } from "react-router-dom";
 function Cart() {
   const [cart, setCart] = useState([]);
   const [reload, setReload] = useState(false);
   const [auth, setAuth] = useAuth();
   const token = getAccessToken();
+  const navigate = useNavigate();
   const triggerReload = () => {
-    setReload((prev) => !prev); // Đảo giá trị để kích hoạt useEffect
+    setReload((prev) => !prev);
   };
   useEffect(() => {
     const fetchCart = async () => {
@@ -102,19 +103,15 @@ function Cart() {
         }
       });
   };
-  console.log(cart.length);
+const handleBuy = () => {
+  navigate("/order", { state: { total } });
+};
+
   return (
     <>
       <div className="cart">
         {cart.length ? (
           <>
-            <div className="cart__title">
-              <div className="cart__title-image">Hình ảnh</div>
-              <div className="cart__title-name">Tên sản phẩm</div>
-              <div className="cart__title-size">Size</div>
-              <div className="cart__title-price">Giá</div>
-              <div className="cart__title-quantity">Số lượng</div>
-            </div>
             {cart.map((item) => (
               <CartItem
                 item={item}
@@ -130,7 +127,7 @@ function Cart() {
                 Tổng tiền: <span>{total}</span>
               </div>
             </div>
-            <button className="cart__buy">Thanh toán</button>
+            <button className="cart__buy" onClick={handleBuy}>Thanh toán</button>
           </>
         ) : (
           <div>Không có sản phẩm nào</div>

@@ -30,6 +30,7 @@
         color: orange;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
+        border: solid 2px black;
     }
     &__search-button:hover{
         background-color: orange;
@@ -46,6 +47,11 @@
             width: 76%;
             margin-left: 175px;
             margin-top: 50px;
+            border: solid 2px black;
+        }
+        select{
+            margin-left: 175px;
+            margin-top: 30px;
         }
     }
     &__trans{
@@ -74,4 +80,22 @@
             color: white;
         }
     }
+    &__return{
+        div{
+            font-size: 30px;
+            margin-left: 10px;
+        }
+        border-radius: 5px ;
+        margin-top: 50px;
+        height: 40px;
+        width: 60px;
+    }
+    &__return:hover{
+        border: none;
+        background-color: orange;
+        color: white
+    }
+}
+select, input, button{
+    border: solid 2px black;
 }

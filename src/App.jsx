@@ -17,8 +17,7 @@ import { ToastContainer } from "react-toastify";
 import AppProvider from "./context/app-provider";
 import ProductDetail from "./pages/customer/Detail";
 import Cart from "./pages/customer/cart";
-import LayoutDefault from "./components/layouts/LayoutDefault";
-
+import CartOrder from "./pages/Order";
 const allRouter = [
   {
     path: "/",
@@ -52,13 +51,18 @@ const allRouter = [
   },
   {
     path: "detail/:postId",
-    element: <LayoutDefault />,
+    element: <MainLayout />,
     children: [{ index: true, element: <ProductDetail /> }],
   },
   {
     path: "cart",
-    element: <LayoutDefault />,
+    element: <MainLayout />,
     children: [{ index: true, element: <Cart /> }],
+  },
+  {
+    path: "order",
+    element: <MainLayout />,
+    children: [{ index: true, element: <CartOrder /> }],
   },
   {
     path: "*",
