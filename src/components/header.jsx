@@ -13,10 +13,10 @@ export default function Header() {
   const [auth, setAuth] = useAuth();
   console.log(user, auth);
   const navigate = useNavigate();
-  const handleLogo = () =>{
+  const handleLogo = () => {
     navigate("/");
     window.location.reload();
-  }
+  };
   const handleLogOut = async () => {
     try {
       const response = await authService.logOut();
@@ -34,7 +34,11 @@ export default function Header() {
   return (
     <header className="px-[130px] py-[10px] flex justify-between bg-[#e5e7eb]">
       <div className="flex justify-center items-center gap-10">
-        <img src={Logo} className="h-[80px] w-[80px] rounded " onClick={handleLogo} />
+        <img
+          src={Logo}
+          className="h-[80px] w-[80px] rounded "
+          onClick={handleLogo}
+        />
         <p className="font-bold text-2xl text-[#ffa500]">ShoeSpot</p>
       </div>
       <div className="flex justify-center items-center gap-10">
@@ -67,6 +71,14 @@ export default function Header() {
         ) : (
           <nav>
             <ul className="flex justify-center items-center gap-10">
+              <li>
+                <Link
+                  to="/app/member/purchase-history"
+                  style={{ fontFamily: "Poppins", textDecoration: "none" }}
+                >
+                  Purchase History
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/app/member/my-info"
