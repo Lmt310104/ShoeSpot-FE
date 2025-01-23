@@ -23,7 +23,7 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
     setSearch(e.target.value); // Cập nhật giá trị tìm kiếm
   };
   const fetcApi = (info) =>{
-      fetch(`http://localhost:3055/api/v1/product/search?q=${info}&page=${item}`)
+      fetch(`http://localhost:3055/api/v1/product/search?q=${info}&page=${1}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Không tìm thấy sản phẩm phù hợp."); // Xử lý lỗi HTTP
