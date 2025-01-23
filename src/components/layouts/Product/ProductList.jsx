@@ -13,9 +13,7 @@ function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3055/api/v1/product?page=${currentpage}`
-        );
+        const response = await fetch(`${API_URL}/product?page=${currentpage}`);
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -44,12 +42,16 @@ function ProductList() {
       alert("Đây là trang cuối cùng rồi");
     }
   };
-  const handleReturn = () =>{
+  const handleReturn = () => {
     window.location.reload();
-  }
+  };
   return (
     <>
-      <ProductSearch item = {currentpage} onSearchResults={setSearchResults} onSetPageSize = {setPageSize}/>
+      <ProductSearch
+        item={currentpage}
+        onSearchResults={setSearchResults}
+        onSetPageSize={setPageSize}
+      />
       <div className="product">
         {searchResults.length > 0 ? (
           // Hiển thị kết quả tìm kiếm
@@ -66,9 +68,13 @@ function ProductList() {
                 Next
               </button>
             </div>
-            <button title = "Trở về trang chủ" className="product__return" onClick={handleReturn}>
+            <button
+              title="Trở về trang chủ"
+              className="product__return"
+              onClick={handleReturn}
+            >
               <div>
-              <GrReturn />
+                <GrReturn />
               </div>
             </button>
           </>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderITem";
-import "./Order.scss"
+import "./Order.scss";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { getAccessToken } from "../../lib/api-client";
+import { API_URL } from "../../utils/constant";
 function CartOrder() {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -17,13 +18,13 @@ function CartOrder() {
   const [loadingProvinces, setLoadingProvinces] = useState(true);
   const [loadingDistricts, setLoadingDistricts] = useState(false);
   const [loadingWards, setLoadingWards] = useState(false);
-   const [auth, setAuth] = useAuth();
+  const [auth, setAuth] = useAuth();
   const token = getAccessToken();
   const [error, setError] = useState(null);
   const location = useLocation();
   const totalMoney = location.state?.total;
   const [cart, setCart] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
   const navigate = useNavigate();
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
@@ -32,23 +33,20 @@ function CartOrder() {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await fetch(`http://localhost:3055/api/v1/cart?userId=${auth.userId}`,
-          {
-            headers: {
+        const response = await fetch(`${API_URL}/cart?userId=${auth.userId}`, {
+          headers: {
             Accept: "application/json",
-          "Content-Type": "application/json",
-          "authorization": `${token}`,
-          "x-client-id": auth.userId
-          }
-          }
-        );
+            "Content-Type": "application/json",
+            authorization: `${token}`,
+            "x-client-id": auth.userId,
+          },
+        });
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
         const data = await response.json();
         setCart(data.metadata.cart_products);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
     fetchCart();
   }, []);
@@ -75,8 +73,12 @@ function CartOrder() {
   useEffect(() => {
     if (selectedCity) {
       setLoadingDistricts(true);
-      const provinceCode = provinces.find((province) => province.name === selectedCity)?.code;
-      fetch(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${provinceCode}&limit=-1`)
+      const provinceCode = provinces.find(
+        (province) => province.name === selectedCity
+      )?.code;
+      fetch(
+        `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${provinceCode}&limit=-1`
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Lỗi khi tải dữ liệu quận/huyện");
@@ -100,8 +102,12 @@ function CartOrder() {
   useEffect(() => {
     if (selectedDistrict) {
       setLoadingWards(true);
-      const districtCode = districts.find((district) => district.name === selectedDistrict)?.code;
-      fetch(`https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${districtCode}&limit=-1`)
+      const districtCode = districts.find(
+        (district) => district.name === selectedDistrict
+      )?.code;
+      fetch(
+        `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${districtCode}&limit=-1`
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Lỗi khi tải dữ liệu xã/thôn");
@@ -133,26 +139,25 @@ function CartOrder() {
   };
   const postCart = async () => {
     try {
-      const response = await fetch("http://localhost:3055/api/v1/checkout", {
+      const response = await fetch(`${API_URL}/checkout`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          authorization:`${token}`,
-          "x-client-id": auth.userId
+          authorization: `${token}`,
+          "x-client-id": auth.userId,
         },
         body: JSON.stringify({
-          cart_products:cart
-          ,
+          cart_products: cart,
           totalPrice: totalMoney,
           user_address: {
             street: "123",
             ward: selectedWard,
             city: selectedCity,
             district: selectedDistrict,
-            country: "VietNam"
+            country: "VietNam",
           },
-          user_payment: selectedOption
+          user_payment: selectedOption,
         }),
       });
       const data = await response.json();
@@ -165,9 +170,9 @@ function CartOrder() {
           showConfirmButton: false,
           timer: 1500,
         });
-        setTimeout(() =>{
-          navigate("/")
-        },2000)
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
         throw new Error(data.message || "Đã xảy ra lỗi khi thêm sản phẩm!");
       }
@@ -182,109 +187,117 @@ function CartOrder() {
   const handleWardChange = (e) => {
     setSelectedWard(e.target.value);
   };
-  const handleSubmit = () =>{
+  const handleSubmit = () => {
     postCart();
-  }
+  };
   return (
     <>
       <div className="order">
-      <h1>THÔNG TIN MUA HÀNG</h1>
-      <h3>HÀNG ĐÃ MUA</h3>
-      <div className="cart">
-        {
-          cart.map((item)=>(
-            <OrderItem item = {item} key={item.productId} />
-          ))
-        }
-      </div>
-      <div className="order__total">
-      <div className="cart__total">
-        <div>
-          Tổng tiền:<span>{totalMoney}</span>
+        <h1>THÔNG TIN MUA HÀNG</h1>
+        <h3>HÀNG ĐÃ MUA</h3>
+        <div className="cart">
+          {cart.map((item) => (
+            <OrderItem item={item} key={item.productId} />
+          ))}
         </div>
-      </div>
-      </div>
-      <h3>ĐỊA CHỈ GIAO HÀNG</h3>
+        <div className="order__total">
+          <div className="cart__total">
+            <div>
+              Tổng tiền:<span>{totalMoney}</span>
+            </div>
+          </div>
+        </div>
+        <h3>ĐỊA CHỈ GIAO HÀNG</h3>
 
-      {/* Dropdown tỉnh/thành phố */}
-      <label className="address">Chọn tỉnh/thành phố:</label>
-      {loadingProvinces ? (
-        <p>Đang tải danh sách tỉnh/thành phố...</p>
-      ) : error ? (
-        <p style={{ color: "red" }}>Lỗi: {error}</p>
-      ) : (
-        <select value={selectedCity} onChange={handleCityChange}>
-          <option value="">-- Chọn tỉnh/thành phố --</option>
-          {provinces.map((province) => (
-            <option key={province.code} value={province.name}>
-              {province.name}
-            </option>
-          ))}
-        </select>
-      )}
-      <br/>
-      {/* Dropdown quận/huyện */}
-      <label className="address">Chọn quận/huyện:</label>
-      {loadingDistricts ? (
-        <p>Đang tải danh sách quận/huyện...</p>
-      ) : (
-        <select value={selectedDistrict} onChange={handleDistrictChange} disabled={!selectedCity}>
-          <option value="">-- Chọn quận/huyện --</option>
-          {districts.map((district) => (
-            <option key={district.code} value={district.name}>
-              {district.name}
-            </option>
-          ))}
-        </select>
-      )}
-      <br/>
-      {/* Dropdown xã/thôn */}
-      <label className="address">Chọn xã/phường/thị trấn:</label>
-      {loadingWards ? (
-        <p>Đang tải danh sách xã/phường/thị trấn...</p>
-      ) : (
-        <select value={selectedWard} onChange={handleWardChange} disabled={!selectedDistrict}>
-          <option value="">-- Chọn xã/phường/thị trấn --</option>
-          {wards.map((ward) => (
-            <option key={ward.code} value={ward.name}>
-              {ward.name}
-            </option>
-          ))}
-        </select>
-      )}
-      <h3 className="order__method">CHỌN PHƯƠNG THỨC THANH TOÁN</h3>
-      <label>
-        <input
-          type="radio"
-          value="COD"
-          checked={selectedOption === 'COD'}
-          onChange={handleChange}
-        />
-        COD
-      </label>
-      <br/>
-      <label>
-        <input
-          type="radio"
-          value="Credit Card"
-          checked={selectedOption === 'Credit Card'}
-          onChange={handleChange}
-        />
-        Credit Card
-      </label>
-      <br/>
-      <label>
-        <input
-          type="radio"
-          value="Smart Banking"
-          checked={selectedOption === 'Smart Banking'}
-          onChange={handleChange}
-        />
-        Smart Banking
-      </label>
+        {/* Dropdown tỉnh/thành phố */}
+        <label className="address">Chọn tỉnh/thành phố:</label>
+        {loadingProvinces ? (
+          <p>Đang tải danh sách tỉnh/thành phố...</p>
+        ) : error ? (
+          <p style={{ color: "red" }}>Lỗi: {error}</p>
+        ) : (
+          <select value={selectedCity} onChange={handleCityChange}>
+            <option value="">-- Chọn tỉnh/thành phố --</option>
+            {provinces.map((province) => (
+              <option key={province.code} value={province.name}>
+                {province.name}
+              </option>
+            ))}
+          </select>
+        )}
+        <br />
+        {/* Dropdown quận/huyện */}
+        <label className="address">Chọn quận/huyện:</label>
+        {loadingDistricts ? (
+          <p>Đang tải danh sách quận/huyện...</p>
+        ) : (
+          <select
+            value={selectedDistrict}
+            onChange={handleDistrictChange}
+            disabled={!selectedCity}
+          >
+            <option value="">-- Chọn quận/huyện --</option>
+            {districts.map((district) => (
+              <option key={district.code} value={district.name}>
+                {district.name}
+              </option>
+            ))}
+          </select>
+        )}
+        <br />
+        {/* Dropdown xã/thôn */}
+        <label className="address">Chọn xã/phường/thị trấn:</label>
+        {loadingWards ? (
+          <p>Đang tải danh sách xã/phường/thị trấn...</p>
+        ) : (
+          <select
+            value={selectedWard}
+            onChange={handleWardChange}
+            disabled={!selectedDistrict}
+          >
+            <option value="">-- Chọn xã/phường/thị trấn --</option>
+            {wards.map((ward) => (
+              <option key={ward.code} value={ward.name}>
+                {ward.name}
+              </option>
+            ))}
+          </select>
+        )}
+        <h3 className="order__method">CHỌN PHƯƠNG THỨC THANH TOÁN</h3>
+        <label>
+          <input
+            type="radio"
+            value="COD"
+            checked={selectedOption === "COD"}
+            onChange={handleChange}
+          />
+          COD
+        </label>
+        <br />
+        <label>
+          <input
+            type="radio"
+            value="Credit Card"
+            checked={selectedOption === "Credit Card"}
+            onChange={handleChange}
+          />
+          Credit Card
+        </label>
+        <br />
+        <label>
+          <input
+            type="radio"
+            value="Smart Banking"
+            checked={selectedOption === "Smart Banking"}
+            onChange={handleChange}
+          />
+          Smart Banking
+        </label>
 
-      <br />
-      <button className="cart__buy" onClick={handleSubmit}>Đặt hàng</button>
+        <br />
+        <button className="cart__buy" onClick={handleSubmit}>
+          Đặt hàng
+        </button>
       </div>
     </>
   );

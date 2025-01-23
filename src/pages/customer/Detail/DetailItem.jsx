@@ -36,7 +36,7 @@ function DetailItem({ detail }) {
   useEffect(() => {
     const fetchProductSame = async () => {
       const response = await fetch(
-        `http://localhost:3055/api/v1/product/related-products?brand=${detail.product_brand}`
+        `${API_URL}/product/related-products?brand=${detail.product_brand}`
       );
       if (!response.ok) {
         throw new Error("Không tìm thấy sản phẩm"); // Xử lý lỗi HTTP
@@ -80,7 +80,7 @@ function DetailItem({ detail }) {
         Swal.fire({
           position: "top",
           icon: "success",
-          title:  "Thêm sản phẩm vào giỏ hàng thành công",
+          title: "Thêm sản phẩm vào giỏ hàng thành công",
           showConfirmButton: false,
           timer: 1500,
         });
