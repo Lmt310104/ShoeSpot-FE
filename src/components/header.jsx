@@ -11,6 +11,7 @@ import { Button } from "antd";
 export default function Header() {
   const [user, setUser] = useUser();
   const [auth, setAuth] = useAuth();
+  console.log(user, auth);
   const navigate = useNavigate();
   const handleLogOut = async () => {
     try {
@@ -18,15 +19,14 @@ export default function Header() {
       toast.success("Đăng xuất thành công");
       if (response) {
         setAuth(null);
-        removeAccessToken();
         setUser(null);
+        removeAccessToken();
         navigate("/auth/login");
       }
     } catch (err) {
       console.log(err);
     }
   };
-
   return (
     <header className="px-[130px] py-[10px] flex justify-between bg-[#e5e7eb]">
       <div className="flex justify-center items-center gap-10">
@@ -39,14 +39,24 @@ export default function Header() {
             <TiShoppingCart size={30} />
           </Link>
         </div>
-        {user ? (
+        {!auth ? (
           <nav>
             <ul className="flex justify-center items-center gap-10">
               <li>
-                <Link to="/auth/login">Login</Link>
+                <Link
+                  to="/auth/login"
+                  style={{ fontFamily: "Poppins", textDecoration: "none" }}
+                >
+                  Login
+                </Link>
               </li>
               <li>
-                <Link to="/auth/signup">Sign Up</Link>
+                <Link
+                  to="/auth/signup"
+                  style={{ fontFamily: "Poppins", textDecoration: "none" }}
+                >
+                  Sign Up
+                </Link>
               </li>
             </ul>
           </nav>
@@ -54,10 +64,18 @@ export default function Header() {
           <nav>
             <ul className="flex justify-center items-center gap-10">
               <li>
-                <Link to="/app/member/my-info">Profile</Link>
+                <Link
+                  to="/app/member/my-info"
+                  style={{ fontFamily: "Poppins", textDecoration: "none" }}
+                >
+                  Profile
+                </Link>
               </li>
               <li>
-                <Button style={{ border: 0 }} onClick={handleLogOut}>
+                <Button
+                  style={{ border: 0, fontFamily: "Poppins" }}
+                  onClick={handleLogOut}
+                >
                   Logout
                 </Button>
               </li>

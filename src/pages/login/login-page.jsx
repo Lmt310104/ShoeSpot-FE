@@ -16,10 +16,9 @@ export default function LoginPage() {
       if (response.data) {
         const accessToken = response.data.metadata.tokens.accessToken;
         setAccessToken(accessToken);
-        const { id, role } = jwtDecode(accessToken);
-
+        const { userId, role } = jwtDecode(accessToken);
         setAuth({
-          userId: id,
+          userId: userId,
           role,
         });
         toast.success("Đăng nhập thành công");
