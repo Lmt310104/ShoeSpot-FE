@@ -114,6 +114,7 @@ function DetailItem({ detail }) {
   const closeModal = () => {
     setIsModalOpen(false); // Tắt modal
   };
+  console.log(detail.product_stock)
   // Modal
   return (
     <>
@@ -132,9 +133,16 @@ function DetailItem({ detail }) {
         <div className="detail__info">
           <div className="detail__name">{detail.product_name}</div>
           <div className="detail__description">
-            {detail.product_description}
+            <div>{detail.product_description}</div>
+            <div className="detail__brand">Thương hiệu: {detail.product_brand}</div>
           </div>
           <div className="detail__price">₫{detail.product_price}</div>
+          <div>
+          Tổng kho: 
+              
+                 {detail.product_stock}
+
+            </div>
           <div className="detail__buy">
             <div>
               <div className="detail__size-title">Size giày</div>
