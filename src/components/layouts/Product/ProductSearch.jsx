@@ -6,7 +6,6 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
   const [search, setSearch] = useState(""); // Giá trị nhập liệu
   const uniqueBrands = ["Adidas", "Nike", "Puma", "Jodan"]
   const [selectedBrand, setSelectedBrand] = useState("");
-  let totalPages =1;
   const handleBrandChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedBrand(selectedValue);
@@ -19,13 +18,11 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
     } else if (search.trim()) {
       fetcApi(search);
     }
-  }, [item]);  
+  }, [item]);
   const handleChange = (e) => {
     setSearch(e.target.value); // Cập nhật giá trị tìm kiếm
   };
   const fetcApi = (info) =>{
-    if (item<= totalPages)
-    {
       fetch(`http://localhost:3055/api/v1/product/search?q=${info}&page=${item}`)
       .then((res) => {
         if (!res.ok) {
@@ -38,7 +35,7 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
           Swal.fire("Thông báo", "Không có sản phẩm nào được tìm thấy.", "info");
           onSearchResults([]); // Đặt danh sách rỗng
         } else {
-          totalPages = data.metadata.pagination.totalPages;
+          const totalPages = data.metadata.pagination.totalPages;
           onSetPageSize(totalPages);
           onSearchResults(data.metadata.results);
         }
@@ -47,10 +44,7 @@ function ProductSearch({item, onSearchResults, onSetPageSize}) {
         Swal.fire("Lỗi", err.message, "error");
         onSearchResults([]); // Đặt lại danh sách sản phẩm
       });
-    }
-    else{
-      alert("Đây là trang cuối rồi");
-    }
+    
   }
   const handleSearch = (e) => {
     e.preventDefault();

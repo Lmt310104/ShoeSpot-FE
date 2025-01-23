@@ -49,7 +49,7 @@ function ProductList() {
   }
   return (
     <>
-      <ProductSearch item = {currentpage} onSearchResults={setSearchResults} onSetPageSize = {setPageSize} />
+      <ProductSearch item = {currentpage} onSearchResults={setSearchResults} onSetPageSize = {setPageSize}/>
       <div className="product">
         {searchResults.length > 0 ? (
           // Hiển thị kết quả tìm kiếm
