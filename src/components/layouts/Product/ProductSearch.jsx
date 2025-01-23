@@ -4,7 +4,7 @@ import { API_URL } from "../../../utils/constant";
 function ProductSearch({item, onSearchResults, onSetPageSize}) {
   console.log(item);
   const [search, setSearch] = useState(""); // Giá trị nhập liệu
-  const uniqueBrands = ["Adidas", "Nike", "Puma"]
+  const uniqueBrands = ["Adidas", "Nike", "Puma", "Jodan"]
   const [selectedBrand, setSelectedBrand] = useState("");
   let totalPages =1;
   const handleBrandChange = (e) => {

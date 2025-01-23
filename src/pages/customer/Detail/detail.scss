@@ -1,16 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+  font-family: "Montserrat" !important;
+}
 .detail {
   display: flex;
   margin-top: 50px;
-  font-family: "Poppins";
+  font-family: "Montserrat";
   &__image {
     margin-left: 100px;
     width: 30%;
     aspect-ratio: 3/4;
     img {
       width: 100%;
-      height: 400px;
-      object-fit: cover;
+      height: auto;
+      aspect-ratio: 1/1;
+      object-fit: contain;
     }
   }
   &__info {
@@ -24,14 +29,14 @@
   &__description {
     height: 200px;
   }
-  &__price{
-    color:orange;
+  &__price {
+    color: orange;
     font-weight: 500;
     font-size: 30px;
   }
   &__buy {
     display: flex;
-    button{
+    button {
       padding: 0 5px;
     }
   }
@@ -44,16 +49,16 @@
     background-color: white;
     border: 1px solid;
     margin-top: 5px;
-    border-radius: 3px ;
+    border-radius: 3px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
-  &__size:hover{
+  &__size:hover {
     background-color: orange;
     color: white;
     border: 1px solid black;
   }
-  &__choose{
+  &__choose {
     background-color: orange;
     color: white;
     border: 1px solid black;
@@ -86,13 +91,38 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     i {
-      font-size: 20px; 
+      font-size: 20px;
     }
   }
   &__button:hover {
     border: none;
     background-color: orange;
     color: black;
+  }
+  &__modal {
+    display: flex; /* Hiển thị ở dạng flex để căn giữa */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Màu nền mờ */
+    z-index: 1000;
+    img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 1px solid #fff;
+    }
+  }
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
   }
 }
 .detail__stock-buy input {
@@ -102,17 +132,16 @@
   text-align: center;
   vertical-align: middle;
 }
-.product__same{
+.product__same {
   margin-bottom: 100px;
   margin-left: 100px;
   font-size: 30px;
   color: orange;
-  font-family: "Roboto";
   margin-top: -100px !important;
 }
-.detail_product{
+.detail_product {
   margin-bottom: 200px;
-  .product{
+  .product {
     margin-left: 100px !important;
   }
 }

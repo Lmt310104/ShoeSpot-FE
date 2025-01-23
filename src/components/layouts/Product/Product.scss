@@ -7,9 +7,13 @@
     margin-left: 180px;
     font-family: 'Poppins';
     &__item{
+        cursor: pointer;
+        border: 2px solid orange;
         width: 20%;
+        transition: all 0.3s ease-in-out;
         &:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Hiệu ứng khi hover
+            border: none;
+            box-shadow: 0 4px 6px black; // Hiệu ứng khi hover
           }
     }
     
@@ -28,7 +32,7 @@
         padding: 15px;
         background-color: white;
         color: orange;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.4s ease-in-out;
         cursor: pointer;
         border: solid 2px black;
     }
@@ -40,6 +44,10 @@
         font-size: 16px;
         font-weight: bold;
         color: red;
+        margin-left: 5px;
+    }
+    &__title{
+        margin-left: 5px;
     }
     &__search{
         input{

@@ -59,12 +59,12 @@ function Cart() {
 
     swalWithBootstrapButtons
       .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Bạn có chắc không?",
+        text: "Bạn sẽ không thể hoàn tác hành động này!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
+        confirmButtonText: "Vâng, hãy xóa nó!",
+        cancelButtonText: "Không, hãy hủy!",
         reverseButtons: true,
       })
       .then((result) => {
@@ -81,8 +81,8 @@ function Cart() {
             .then((response) => response.json())
             .then(() => {
               swalWithBootstrapButtons.fire(
-                "Deleted!",
-                "Your item has been deleted.",
+                "Đã xóa!",
+                "Bạn đã xóa toàn bộ sản phẩm!",
                 "success"
               );
               triggerReload(); // Kích hoạt tải lại
@@ -96,8 +96,8 @@ function Cart() {
             });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "Your item is safe :)",
+            "Đã hủy!",
+            "Bạn đã hủy xóa toàn bộ sản phẩm",
             "error"
           );
         }
