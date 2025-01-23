@@ -1,12 +1,28 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import Thumbnail from "../../assets/auth_2.jpg";
+import authService from "../../services/auth.service";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      const response = await authService.signUp(values);
+      if (response.data) {
+        if (response.data.status === 201) {
+          toast.success("Đăng ký thành công");
+          navigate("/auth/login");
+        }
+      }
+    } catch (error) {
+      toast.error("Sign up failed: " + error.message);
+      console.error("Sign up error:", error);
+    }
   };
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.error("Form validation failed:", errorInfo);
+    toast.error("Please check your inputs and try again");
   };
   return (
     <div className="flex justify-center max-h-screen">
@@ -107,7 +123,7 @@ export default function SignUpPage() {
           </Form.Item>
           <Form.Item
             label="Phone number"
-            name="phonenumber"
+            name="phone"
             rules={[
               {
                 required: true,
@@ -124,6 +140,22 @@ export default function SignUpPage() {
               {
                 required: true,
                 message: "Please input your birthday!",
+              },
+            ]}
+          >
+            <DatePicker
+              style={{
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Address"
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: "Please input your address!",
               },
             ]}
           >

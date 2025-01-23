@@ -1,4 +1,4 @@
-import Logo from "../assets/logo.jpg";
+import Logo from "../assets/logo.png";
 import Facebook from "../assets/Facebook.svg";
 import Instagram from "../assets/Instagram.svg";
 import Youtube from "../assets/YouTube.svg";

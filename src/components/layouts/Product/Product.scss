@@ -3,7 +3,6 @@
     display: flex;
     flex-wrap: wrap; //xuống hàng
     margin-top: 50px !important;
-    margin-bottom: 150px !important;
     gap: 30px;
     margin-left: 180px;
     font-family: 'Poppins';
@@ -16,8 +15,12 @@
     
     &__image{
         width: 100%;
+        height: auto;
     img{
         width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+        margin-bottom: 20px;
     }
     }
     &__search-button{
@@ -53,6 +56,22 @@
         button{
             margin-left: 20px;
             margin-right: 20px;
+        }
+    }
+    &__trans{
+        text-align: center;
+        margin-left: 550px;
+        margin-right: 500px;
+        margin-bottom: 150px;
+        div{
+            font-size: 20px;
+            color: orange;
+            font-weight: 600;
+        }
+        button{
+            border-radius:  5px;
+            background-color: orange;
+            color: white;
         }
     }
 }

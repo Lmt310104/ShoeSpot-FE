@@ -1,30 +1,20 @@
 import { useState } from "react";
-// import ProductItem from "./ProductItem";
 import Swal from "sweetalert2";
-
-function ProductSearch() {
-  const [search, setSearch] = useState("");
-  const [product, setProduct] = useState(null); // Trạng thái lưu trữ sản phẩm
-
+import { API_URL } from "../../../utils/constant";
+function ProductSearch({ onSearchResults }) {
+  const [search, setSearch] = useState(""); // Giá trị nhập liệu
   const handleChange = (e) => {
     setSearch(e.target.value); // Cập nhật giá trị tìm kiếm
   };
-
   const handleSearch = (e) => {
     e.preventDefault();
 
     if (!search.trim()) {
       Swal.fire("Lỗi", "Vui lòng nhập từ khóa tìm kiếm.", "error");
-      setProduct(null);
+      onSearchResults([]); // Reset kết quả tìm kiếm
       return;
     }
-    setProduct(null); // Xóa kết quả trước đó
-
-    fetch(
-      `http://localhost:3000/products/search?query=${encodeURIComponent(
-        search
-      )}`
-    )
+    fetch(`${API_URL}/api/v1/product/search?q=${search}&page=${1}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Không tìm thấy sản phẩm phù hợp."); // Xử lý lỗi HTTP
@@ -32,22 +22,22 @@ function ProductSearch() {
         return res.json();
       })
       .then((data) => {
-        if (data.length === 0) {
+        if (!data.metadata || data.metadata.results.length === 0) {
           Swal.fire(
             "Thông báo",
             "Không có sản phẩm nào được tìm thấy.",
             "info"
           );
-          setProduct(null);
+          onSearchResults([]); // Đặt danh sách rỗng
         } else {
-          setProduct(data); // Lưu sản phẩm vào state
+          onSearchResults(data.metadata.results);
         }
       })
       .catch((err) => {
         Swal.fire("Lỗi", err.message, "error");
+        onSearchResults([]); // Đặt lại danh sách sản phẩm
       });
   };
-
   return (
     <>
       <div className="product__search">
@@ -63,14 +53,6 @@ function ProductSearch() {
           Tìm kiếm
         </button>
       </div>
-
-      {/* <div className="product__result">
-        {product ? (
-          <ProductItem item={product} /> // Hiển thị sản phẩm
-        ) : (
-          <p></p>
-        )}
-      </div> */}
     </>
   );
 }
